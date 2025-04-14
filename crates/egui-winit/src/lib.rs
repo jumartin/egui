@@ -1623,6 +1623,7 @@ pub fn create_winit_window_attributes(
         title_shown: _title_shown,
         titlebar_buttons_shown: _titlebar_buttons_shown,
         titlebar_shown: _titlebar_shown,
+        tabbing_identifier,
 
         // Windows:
         drag_and_drop: _drag_and_drop,
@@ -1768,6 +1769,9 @@ pub fn create_winit_window_attributes(
             .with_titlebar_transparent(!_titlebar_shown.unwrap_or(true))
             .with_fullsize_content_view(_fullsize_content_view.unwrap_or(false))
             .with_movable_by_window_background(_movable_by_window_background.unwrap_or(false));
+        if let Some(tabbing_id) = tabbing_identifier {
+            window_attributes = window_attributes.with_tabbing_identifier(&tabbing_id);
+        }
     }
 
     window_attributes

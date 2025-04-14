@@ -295,6 +295,7 @@ pub struct ViewportBuilder {
     pub title_shown: Option<bool>,
     pub titlebar_buttons_shown: Option<bool>,
     pub titlebar_shown: Option<bool>,
+    pub tabbing_identifier: Option<String>,
 
     // windows:
     pub drag_and_drop: Option<bool>,
@@ -460,6 +461,13 @@ impl ViewportBuilder {
     #[inline]
     pub fn with_titlebar_shown(mut self, shown: bool) -> Self {
         self.titlebar_shown = Some(shown);
+        self
+    }
+
+    /// macOS: Set the tab identifier, allowing to group windows together.
+    #[inline]
+    pub fn with_tabbing_identifier(mut self, id: String) -> Self {
+        self.tabbing_identifier = Some(id);
         self
     }
 
@@ -654,6 +662,7 @@ impl ViewportBuilder {
             title_shown: new_title_shown,
             titlebar_buttons_shown: new_titlebar_buttons_shown,
             titlebar_shown: new_titlebar_shown,
+            tabbing_identifier: new_tabbing_identifier,
             close_button: new_close_button,
             minimize_button: new_minimize_button,
             maximize_button: new_maximize_button,
@@ -821,6 +830,11 @@ impl ViewportBuilder {
 
         if new_titlebar_shown.is_some() && self.titlebar_shown != new_titlebar_shown {
             self.titlebar_shown = new_titlebar_shown;
+            recreate_window = true;
+        }
+
+        if new_tabbing_identifier.is_some() && self.tabbing_identifier != new_tabbing_identifier {
+            self.tabbing_identifier = new_tabbing_identifier;
             recreate_window = true;
         }
 
